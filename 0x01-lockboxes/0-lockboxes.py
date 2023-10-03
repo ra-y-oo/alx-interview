@@ -1,26 +1,60 @@
 #!/usr/bin/python3
+"""Solves the lock boxes puzzle """
+
+
+def look_next_opened_box(opened_boxes):
+    """Looks for the next opened box
+    Args:
+        opened_boxes (dict): Dictionary which contains boxes already opened
+    Returns:
+        list: List with the keys contained in the opened box
+    """
+    for index, box in opened_boxes.items():
+        if box.get('status') == 'opened':
+            box['status'] = 'opened/checked'
+            return box.get('keys')
+    return None
+
 
 def canUnlockAll(boxes):
-    # Initialize a list to keep track of visited boxes.
-    visited = [False] * len(boxes)
-    # Mark the first box as visited since it's already unlocked
-    visited[0] = True
+    """Check if all boxes can be opened
+    Args:
+        boxes (list): List which contain all the boxes with the keys
+    Returns:
+        bool: True if all boxes can be opened, otherwise, False
+    """
+    if len(boxes) <= 1 or boxes == [[]]:
+        return True
 
-    # Initialize a stack for DFS and add the first box to it.
-    stack = [0]
+    aux = {}
+    while True:
+        if len(aux) == 0:
+            aux[0] = {
+                'status': 'opened',
+                'keys': boxes[0],
+            }
+        keys = look_next_opened_box(aux)
+        if keys:
+            for key in keys:
+                try:
+                    if aux.get(key) and aux.get(key).get('status') \
+                       == 'opened/checked':
+                        continue
+                    aux[key] = {
+                        'status': 'opened',
+                        'keys': boxes[key]
+                    }
+                except (KeyError, IndexError):
+                    continue
+        elif 'opened' in [box.get('status') for box in aux.values()]:
+            continue
+        elif len(aux) == len(boxes):
+            break
+        else:
+            return False
 
-    while stack:
-        current_box = stack.pop()
+    return len(aux) == len(boxes)
 
-        # Iterate through the keys in the current box
-        for key in boxes[current_box]:
-            # Check if the key opens a box and if not visited
-            if key < len(boxes) and not visited[key]:
-                visited[key] = True
-                stack.append(key)
-
-    # Check if all boxes have been visited.
-    return all(visited)
 
 def main():
     """Entry point"""
