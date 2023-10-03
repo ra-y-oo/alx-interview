@@ -7,11 +7,12 @@ Contains a python function:
 ```python
 def canUnlockAll(boxes)
 ```
-```boxes``` is  a list of lists.
+
+```boxes``` is  a list of lists. The function determines if a list boxes can be opened.
 
 ## Problem Definition
 
-You have ```n``` number of locked boxes in fron tof you. Each box is numbered sequentially from ```0``` to ```n-1``` and each box contains keys to other boxes. Return ```True``` if all boxes can be opened, else return ```False```
+You have ```n``` number of locked boxes in fron tof you. Each box is numbered sequentially from ```0``` to ```n-1``` and each box may contain keys to the other boxes. Define a method that determines if the boxes can be opened. Return ```True``` if all boxes can be opened, else return ```False```
 
 ## How to run
 
