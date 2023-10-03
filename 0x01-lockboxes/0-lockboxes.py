@@ -21,3 +21,12 @@ def canUnlockAll(boxes):
 
     # Check if all boxes have been visited.
     return all(visited)
+
+def main():
+    """Entry point"""
+    canUnlockAll([[]])
+
+
+if __name__ == '__main__':
+    main()
+    
