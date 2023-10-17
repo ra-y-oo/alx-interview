@@ -1,0 +1,24 @@
+name: PEP8 Validation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install PEP8 linter
+        run: pip install pep8
+
+      - name: Run PEP8 linter
+        run: pep8 .
+
+      - name: Check PEP8 report for errors
+        if: ${{ steps.pep8.outputs.failed }}
+        run: exit 1
+        
