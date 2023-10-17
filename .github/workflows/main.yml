@@ -1,4 +1,4 @@
-name: PEP8 Validation
+name: PEP8 Validation and Autofix
 
 on:
   push:
@@ -15,7 +15,16 @@ jobs:
       - name: Install PEP8 linter
         run: pip install pep8
 
+      - name: Install autopep8
+        run: pip install autopep8
+
       - name: Run PEP8 linter
+        run: pep8 .
+
+      - name: Fix PEP8 violations
+        run: autopep8 -i .
+
+      - name: Check code again for PEP8 violations
         run: pep8 .
 
       - name: Check PEP8 report for errors
