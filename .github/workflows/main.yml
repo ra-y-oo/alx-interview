@@ -1,7 +1,10 @@
-name: PEP8 Validation and Autofix
+name: PEP8 validation
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
@@ -12,22 +15,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install PEP8 linter
-        run: pip install pep8
-
-      - name: Install autopep8
+      - name: Install dependencies
         run: pip install autopep8
 
-      - name: Run PEP8 linter
-        run: pep8 .
+      - name: Fix PEP8 errors
+        run: autopep8 --in-place --recursive .
 
-      - name: Fix PEP8 violations
-        run: autopep8 -i .
+      - name: Check PEP8 validation
+        run: pycodestyle .
 
-      - name: Check code again for PEP8 violations
-        run: pep8 .
-
-      - name: Check PEP8 report for errors
-        if: ${{ steps.pep8.outputs.failed }}
-        run: exit 1
-        
+      - name: Fail if PEP8 validation errors
+        if: steps.check-pep8.outputs.failed == 1
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log("PEP8 validation errors found.")
+            process.exit(1)
+            
